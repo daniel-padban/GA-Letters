@@ -35,3 +35,4 @@ full_test_dataset = torchvision.datasets.EMNIST(
 subset_p = config_dict['subset_p']
 
 
+tjena
