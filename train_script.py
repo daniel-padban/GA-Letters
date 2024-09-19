@@ -3,6 +3,7 @@ import torchvision
 from torchvision.transforms import v2
 import json
 from torch.utils.data import random_split
+from model_def import CNN
 
 def read_config(config_path):
     with open(config_path) as conf_file:
@@ -34,5 +35,6 @@ full_test_dataset = torchvision.datasets.EMNIST(
 
 subset_p = config_dict['subset_p']
 
-
-tjena
+model = CNN(
+    ...
+)
