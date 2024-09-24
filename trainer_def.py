@@ -22,7 +22,7 @@ class CNNTrainer():
             preds = self.model(X) # make predictions
             loss = self.loss_fn(preds,y) #calculate loss with loss function
             loss.backward()
-
+            
             pred_probabilities = torch.softmax(preds)
             most_probable = torch.argmax(pred_probabilities,1) #select highest probability of each class 
             num_correct = (most_probable == y).sum().item()

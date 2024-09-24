@@ -1,6 +1,7 @@
 {
     "train_size":10000,
     "test_size":1234,
+    "batch_size":10,
 
     "input_channels":1,
     "conv1":3,
