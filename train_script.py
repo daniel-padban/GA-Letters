@@ -20,12 +20,12 @@ config_dict = read_config('config.json')
 image_transform = v2.Compose([
     v2.Resize(28),
     v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]), # to tensor
-    v2.Normalize(mean=0.1736, std=0.3248)
+    v2.Normalize(mean=(0.1736,), std=(0.3248,))
 ]
 
 )
 train_imgs, train_labels = load_csv_data('EMNIST_l/emnist-letters-train.csv')
-test_imgs, test_labels = load_csv_data('EMNIST_l/emnist-letters-test.csv'),
+test_imgs, test_labels = load_csv_data('EMNIST_l/emnist-letters-test.csv')
 
 for i in range(n_runs):
     #set random seeds for reproducibility
