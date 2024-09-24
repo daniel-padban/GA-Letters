@@ -1,3 +1,19 @@
 {
-    "subset_p":0.1
+    "train_size":10000,
+    "test_size":1234,
+    "batch_size":10,
+
+    "input_channels":1,
+    "conv1":3,
+    "ckernel1":2,
+    "MPkernel1":2,
+    "conv2":10,
+    "ckernel2":2,
+    "MPkernel2":2,
+    "conv3":26,
+    "ckernel3":2,
+    "MPkernel3":2,
+
+    "lr":1e-3,
+    "epochs":40
 }
