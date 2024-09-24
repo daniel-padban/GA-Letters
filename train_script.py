@@ -90,3 +90,4 @@ for i in range(n_runs):
                          train_dataloader=train_dataloader,
                          test_dataloader=test_dataloader,)
     CNNTrainer.full_epoch_loop()
+    run.finish(0)
