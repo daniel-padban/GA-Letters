@@ -24,8 +24,8 @@ image_transform = v2.Compose([
 ]
 
 )
-train_imgs, train_labels = load_csv_data('EMNIST_l/emnist-letters-train.csv')
-test_imgs, test_labels = load_csv_data('EMNIST_l/emnist-letters-test.csv')
+train_imgs, train_labels = load_csv_data('EMNIST_data/emnist-letters-train.csv')
+test_imgs, test_labels = load_csv_data('EMNIST_data/emnist-letters-test.csv')
 
 for i in range(n_runs):
     #set random seeds for reproducibility
