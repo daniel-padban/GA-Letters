@@ -5,7 +5,6 @@ from model_def import CNN
 from dataset_def import load_csv_data, EMNISTDataset
 import torch
 import wandb
-
 from trainer_def import CNNTrainer
 
 n_runs = 10
@@ -18,7 +17,7 @@ def read_config(config_path):
 config_dict = read_config('config.json')
 
 #augment image
-image_transform = v2.Compose( 
+image_transform = v2.Compose([]
 
 )
 train_imgs, train_labels = load_csv_data('EMNIST_l/emnist-letters-train.csv')
@@ -60,6 +59,7 @@ for i in range(n_runs):
     train_dataloader = DataLoader(dataset=train_dataset,batch_size=batch_size,shuffle=True, num_workers=n_workers)
     test_dataloader = DataLoader(dataset=test_dataset,batch_size=batch_size,shuffle=True, num_workers=n_workers)
 
+
     conv1= run.config['conv1']
     ckernel1= run.config['ckernel1']
     MPkernel1= run.config['MPkernel1']
@@ -91,3 +91,4 @@ for i in range(n_runs):
                          test_dataloader=test_dataloader,)
     CNNTrainer.full_epoch_loop()
     run.finish(0)
+
