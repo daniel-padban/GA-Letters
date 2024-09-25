@@ -3,3 +3,4 @@ SilwerGyatt/
 __pycache__/
 AdrianVenv/
 EMNIST_data/
+wandb/

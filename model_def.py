@@ -20,40 +20,37 @@ class CNN(nn.Module):
                 conv2:int,
                 ckernel2:int,
                 MPkernel2:int,
-                conv3:int,
-                ckernel3:int,
-                MPkernel3:int,
+
                 out_dim:int=26,
                 input_HW:int = 28):
         super().__init__()
         
         #Convolution-Pooling block 1:
-        self.conv1 = nn.Conv2d(in_channels=input_channels,out_channels=conv1,kernel_size=ckernel1)
+        self.conv1 = nn.Conv2d(in_channels=input_channels,out_channels=conv1,kernel_size=ckernel1,padding='same')
+        self.le_relu1 = nn.LeakyReLU()
         self.mpool1 = nn.MaxPool2d(kernel_size=MPkernel1)
-        conv1_HW = self.calculate_dims(input_HW,ckernel1) #height and/or width of conv2 output
-        mpool1_HW = self.calculate_dims(conv1_HW,MPkernel1,stride=MPkernel1) #height and/or width of mpool1 output
+        mpool1_HW = self.calculate_dims(input_HW,MPkernel1,stride=MPkernel1) #height and/or width of mpool1 output
+        self.bn1 = nn.BatchNorm2d(num_features=conv1)
 
         #Convolution-Pooling block 2:
-        self.conv2 = nn.Conv2d(in_channels=conv1,out_channels=conv2,kernel_size=ckernel2)
-        self.mpool2 = nn.MaxPool2d(kernel_size=MPkernel2)
-        conv2_HW = self.calculate_dims(mpool1_HW,ckernel2) #height and/or width of conv2 output
-        mpool2_HW = self.calculate_dims(conv2_HW,MPkernel2,stride=MPkernel2) #height and/or width of mpool2 output
+        self.conv2 = nn.Conv2d(in_channels=conv1,out_channels=conv2,kernel_size=ckernel2,padding='same')
+        self.le_relu2 = nn.LeakyReLU()
 
-        #Convolution-Pooling block 3:
-        self.conv3 = nn.Conv2d(in_channels=conv2,out_channels=conv3,kernel_size=ckernel3)
-        self.mpool3 = nn.MaxPool2d(kernel_size=MPkernel3)
-        conv3_HW = self.calculate_dims(mpool2_HW,ckernel3) #height and/or width of conv1 output
-        mpool3_HW = self.calculate_dims(conv3_HW,MPkernel3,stride=MPkernel3) #height and/or width of mpool3 output
+        self.mpool2 = nn.MaxPool2d(kernel_size=MPkernel2)
+        mpool2_HW = self.calculate_dims(mpool1_HW,MPkernel2,stride=MPkernel2) #height and/or width of mpool2 output
 
 
         #output block
         self.flatten = nn.Flatten()
-        flattened_dim = (mpool3_HW**2)*conv3
-        self.fco = nn.Linear(in_features=flattened_dim,out_features=out_dim)
+        flattened_dim = int((mpool2_HW**2)*conv2)
+        self.fc1 = nn.Linear(in_features=flattened_dim,out_features=128)
+        self.le_relu3 = nn.LeakyReLU()
+        self.dropout1 = nn.Dropout()
+        self.fco = nn.Linear(in_features=128,out_features=out_dim)
 
     def calculate_dims(self, HW:int, kernel:int,stride:int=1,):
         '''
-        :param HW: height & width, h = w
+        :param HW: height x width, h = w
         :param kernel: kernel size
         '''
         return (((HW-kernel + 2*0)/stride)+1)
@@ -61,15 +58,19 @@ class CNN(nn.Module):
     def forward(self, x):
         #Convolution-Pooling block 1:
         x = self.conv1(x)
+        x = self.le_relu1(x)
         x = self.mpool1(x)
+        x = self.bn1(x)
         #Convolution-Pooling block 2:
         x = self.conv2(x)
+        x = self.le_relu2(x)
         x = self.mpool2(x)
-        #Convolution-Pooling block 3:
-        x = self.conv3(x)
-        x = self.mpool3(x)
 
         #Outputs
         x = self.flatten(x)
-        x = self.fco(x)
+        x = self.fc1(x)
+        x = self.le_relu3(x)
+        #x = self.dropout1(x)
+        output = self.fco(x)
+        return output
 
