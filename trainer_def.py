@@ -19,7 +19,7 @@ class CNNTrainer():
 
         self.loss_fn = torch.nn.CrossEntropyLoss()
         #self.optimizer = torch.optim.AdamW(params=model.parameters(recurse=True),lr=self.lr)
-        self.optimizer = torch.optim.SGD(params=model.parameters(),lr=self.lr)
+        self.optimizer = torch.optim.SGD(params=model.parameters(),lr=self.lr,momentum=0.9)
 
     def _train_loop(self,epoch):
         self.model.train(True) #training mode 
