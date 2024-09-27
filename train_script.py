@@ -13,23 +13,6 @@ from trainer_def import CNNTrainer
 from init_weights import init_model_w
 from torchvision.datasets import EMNIST
 
-torch_emnist_train = EMNIST('torch_EMNIST',split='letters',train=True,download=True,transform=v2.Compose([
-    v2.Resize(28),
-    v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]), # to tensor
-    v2.RandomHorizontalFlip(p=1),#100% probability
-    v2.RandomRotation(degrees=(90,90)), #flip 90 degrees
-    v2.Normalize((0.1736,),(0.3248,),)
-]),target_transform = lambda y: y - 1)
-torch_emnist_test = EMNIST('torch_EMNIST',split='letters',train=False,download=True,transform=v2.Compose([
-    v2.Resize(28),
-    v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]), # to tensor
-    v2.RandomHorizontalFlip(p=1),#100% probability
-    v2.RandomRotation(degrees=(90,90)), #flip 90 degrees
-    v2.Normalize((0.1736,),(0.3248,))
-]),target_transform = lambda y: y - 1)
-
-torch_img, torch_label = torch_emnist_train.__getitem__(0)
-
 device = ( #selects device
         'cuda'
         if torch.cuda.is_available()
@@ -37,9 +20,7 @@ device = ( #selects device
         if torch.backends.mps.is_available()
         else 'cpu'
     )
-
 print(device)
-
 n_runs = 1
 
 def read_config(config_path): #load config dictionary
