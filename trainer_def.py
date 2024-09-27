@@ -15,22 +15,21 @@ class CNNTrainer():
         self.device = device
 
         self.lr = run.config['lr']
+        self.momentum = run.config['momentum']
         self.clip = run.config['clip']
 
         self.loss_fn = torch.nn.CrossEntropyLoss()
         #self.optimizer = torch.optim.AdamW(params=model.parameters(recurse=True),lr=self.lr)
-        self.optimizer = torch.optim.SGD(params=model.parameters(),lr=self.lr,momentum=0.9)
-
+        self.optimizer = torch.optim.SGD(self.model.parameters(recurse=True),lr=self.lr,momentum=self.momentum)
     def _train_loop(self,epoch):
         self.model.train(True) #training mode 
         step_group = epoch*len(self.train_dataloader)  # calculates how many steps have been processed already, start for count, epoch starts at 0
         running_loss = 0
         for i, (X, y) in enumerate(self.train_dataloader):
             self.optimizer.zero_grad() #reset gradients for next pass
-            X = X.repeat(1,3,1,1) #for resnet
+            #X = X.repeat(1,3,1,1) #for resnet
             X = X.to(device=self.device)
             y = y.to(device=self.device)
-            X = X.requires_grad_(True)
             preds = self.model(X) # make predictions
             loss = self.loss_fn(preds,y) #calculate loss with loss function
             current_loss = loss.item()
@@ -46,7 +45,7 @@ class CNNTrainer():
             self.optimizer.step() #update params
             self.run.log({ #log results
                 "train_step":i+1+step_group,
-                "train_CO_loss":loss,
+                "train_CO_loss":loss.item(),
                 "train_accuracy":accuracy
             })
         mean_loss = running_loss/len(self.train_dataloader)
@@ -57,7 +56,7 @@ class CNNTrainer():
         with torch.no_grad():
             step_group = epoch*len(self.test_dataloader) # calculates how many steps have been processed already, start for count, epoch starts at 0
             for i, (X,y) in enumerate(self.test_dataloader):
-                X = X.repeat(1,3,1,1) #for resnet
+                #X = X.repeat(1,3,1,1) #for resnet
                 X = X.to(device=self.device)
                 y = y.to(device=self.device)
                 
@@ -71,7 +70,7 @@ class CNNTrainer():
 
                 self.run.log({
                     "test_step":i+1+step_group,
-                    "test_CO_loss":loss,
+                    "test_CO_loss":loss.item(),
                     "test_accuracy":accuracy
                 })
 

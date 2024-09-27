@@ -1,17 +1,19 @@
 {
     "train_size":10000,
     "test_size":1234,
-    "batch_size":32,
+    "batch_size":64,
 
     "input_channels":1,
-    "conv1":256,
+    "conv1":32,
     "ckernel1":5,
     "MPkernel1":2,
-    "conv2":128,
-    "ckernel2":3,
+    "conv2":64,
+    "ckernel2":5,
     "MPkernel2":2,
+    "fc1":50,
 
     "lr":1e-3,
+    "momentum":0.5,
     "clip":1,
     "epochs":40
 }

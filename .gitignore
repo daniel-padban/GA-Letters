@@ -4,3 +4,4 @@ __pycache__/
 AdrianVenv/
 EMNIST_data/
 wandb/
+torch_EMNIST/

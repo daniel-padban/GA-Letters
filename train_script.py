@@ -1,16 +1,34 @@
 from cProfile import label
+from sympy import subsets
 import torch.utils
 import torch.utils.data
 from torchvision.transforms import v2
 import json
-from torch.utils.data import random_split, DataLoader
+from torch.utils.data import DataLoader, Subset
 from model_def import CNN
 from dataset_def import load_csv_data, EMNISTDataset
 import torch
 import wandb
 from trainer_def import CNNTrainer
-import matplotlib.pyplot as plt
 from init_weights import init_model_w
+from torchvision.datasets import EMNIST
+
+torch_emnist_train = EMNIST('torch_EMNIST',split='letters',train=True,download=True,transform=v2.Compose([
+    v2.Resize(28),
+    v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]), # to tensor
+    v2.RandomHorizontalFlip(p=1),#100% probability
+    v2.RandomRotation(degrees=(90,90)), #flip 90 degrees
+    v2.Normalize((0.1736,),(0.3248,),)
+]),target_transform = lambda y: y - 1)
+torch_emnist_test = EMNIST('torch_EMNIST',split='letters',train=False,download=True,transform=v2.Compose([
+    v2.Resize(28),
+    v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]), # to tensor
+    v2.RandomHorizontalFlip(p=1),#100% probability
+    v2.RandomRotation(degrees=(90,90)), #flip 90 degrees
+    v2.Normalize((0.1736,),(0.3248,))
+]),target_transform = lambda y: y - 1)
+
+torch_img, torch_label = torch_emnist_train.__getitem__(0)
 
 device = ( #selects device
         'cuda'
@@ -19,21 +37,10 @@ device = ( #selects device
         if torch.backends.mps.is_available()
         else 'cpu'
     )
+
 print(device)
 
-n_runs = 10
-def show_images(dataset:torch.utils.data.Dataset):
-        """ Function to display images and their labels """
-        img_tensor, label= dataset.__getitem__(0)
-        img_tensor = img_tensor.permute(1,2,0)
-        print(img_tensor.shape)
-        label = label
-        img_np = img_tensor.numpy()
-        plt.figure(figsize=(10, 10))
-        plt.imshow(img_np,cmap='gray')
-        plt.axis('off')
-        plt.title(label=label)
-        plt.show()
+n_runs = 1
 
 def read_config(config_path): #load config dictionary
     with open(config_path) as conf_file:
@@ -50,9 +57,20 @@ image_transform = v2.Compose([
     v2.RandomRotation(degrees=(90,90)), #flip 90 degrees
     v2.Normalize((0.1736,),(0.3248,))
 ])
-train_imgs, train_labels = load_csv_data('EMNIST_data/emnist-letters-train.csv')
-test_imgs, test_labels = load_csv_data('EMNIST_data/emnist-letters-test.csv')
-#labels are shifted -1 step, range changes from 1-26 to 0-25, (needed for loss calculation)
+target_transform = lambda y:y-1 #labels are shifted -1 step, range changes from 1-26 to 0-25, (needed for loss calculation)
+full_train_dataset = EMNIST('torch_EMNIST',
+       split='letters',
+       train=True,
+       download=True,
+       transform = image_transform,
+       target_transform = target_transform)
+full_test_dataset = EMNIST('torch_EMNIST',
+       split='letters',
+       train=False,
+       download=True,
+       transform = image_transform,
+       target_transform = target_transform)
+
 
 for i in range(n_runs):
     #set random seeds for reproducibility
@@ -63,27 +81,16 @@ for i in range(n_runs):
     torch.mps.manual_seed(seed)
 
     train_subset_size = config_dict['train_size']
-    test_subset_size = config_dict['test_size']
     #init wandb run
-    run = wandb.init(name = f"Run-D{train_subset_size}-S{seed}-Resnet18", config=config_dict,job_type='experimental run')
+    run = wandb.init(name = f"Run-D{train_subset_size}-S{seed}-T-TorchD", config=config_dict,job_type='experimental run')
     
-    #import train data
-    train_indices = slice(0,train_subset_size)
-    train_dataset = EMNISTDataset(
-        train_imgs,
-        train_labels,
-        transform=image_transform,
-        subset_indices=train_indices)
-
-    #import test data:
-    test_indices = slice(0,test_subset_size)
-    test_dataset = EMNISTDataset(
-        test_imgs,
-        test_labels,
-        transform=image_transform,
-        subset_indices=test_indices
-    )
-
+    test_subset_size = config_dict['test_size']
+    #subset train data
+    train_indices = range(0,train_subset_size)
+    train_dataset = Subset(full_train_dataset,train_indices)
+    #subset test data:
+    test_indices = range(0,test_subset_size)
+    test_dataset = Subset(full_test_dataset,test_indices)
     batch_size = run.config['batch_size']
 
     n_workers = 0
@@ -98,6 +105,7 @@ for i in range(n_runs):
     conv2= run.config['conv2']
     ckernel2= run.config['ckernel2']
     MPkernel2= run.config['MPkernel2']
+    fc1 = run.config['fc1']
 
     model = CNN(
         input_channels=1,
@@ -107,11 +115,13 @@ for i in range(n_runs):
         conv2=conv2,
         ckernel2=ckernel2,
         MPkernel2=MPkernel2,
+        fc1=fc1,
         out_dim=26,
-        input_HW=28
+        input_HW=28,
+        device=device
     )
-    model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True) #resnet18
-
+    #model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True) #resnet18
+    model.apply(init_model_w)
     model.to(device=device)
     #init_model_w(model=model)
 
