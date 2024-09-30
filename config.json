@@ -1,7 +1,7 @@
 {
     "train_size":10000,
     "test_size":1234,
-    "batch_size":64,
+    "batch_size":72,
 
     "input_channels":1,
     "conv1":32,
@@ -10,10 +10,13 @@
     "conv2":64,
     "ckernel2":5,
     "MPkernel2":2,
-    "fc1":50,
+    "conv3":128,
+    "ckernel3":5,
+    "MPkernel3":2,
+    "fc1":256,
 
-    "lr":1e-3,
-    "momentum":0.5,
+    "lr":3e-4,
+    "w_decay":0.4,
     "clip":1,
     "epochs":40
 }

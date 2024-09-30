@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torch.utils
 import torch.utils.data
+import torcheval.metrics.functional as evalF
 from wandb.sdk.wandb_run import Run
 
 class CNNTrainer():
@@ -15,12 +16,12 @@ class CNNTrainer():
         self.device = device
 
         self.lr = run.config['lr']
-        self.momentum = run.config['momentum']
+        self.w_decay = run.config['w_decay']
         self.clip = run.config['clip']
 
         self.loss_fn = torch.nn.CrossEntropyLoss()
         #self.optimizer = torch.optim.AdamW(params=model.parameters(recurse=True),lr=self.lr)
-        self.optimizer = torch.optim.SGD(self.model.parameters(recurse=True),lr=self.lr,momentum=self.momentum)
+        self.optimizer = torch.optim.AdamW(self.model.parameters(recurse=True),lr=self.lr,weight_decay=self.w_decay)
     def _train_loop(self,epoch):
         self.model.train(True) #training mode 
         step_group = epoch*len(self.train_dataloader)  # calculates how many steps have been processed already, start for count, epoch starts at 0
@@ -34,13 +35,15 @@ class CNNTrainer():
             loss = self.loss_fn(preds,y) #calculate loss with loss function
             current_loss = loss.item()
             running_loss += current_loss
-            loss.backward()
+            loss.backward() 
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.clip) #gradient clipping
 
             pred_probabilities = torch.softmax(preds,1)
             most_probable = torch.argmax(pred_probabilities,1) #select highest probability of each class 
             num_correct = (most_probable == y).sum().item()
             accuracy = num_correct/(y.size(0))
+
+            #evalF.multiclass_accuracy(preds,y,average='macro')
             
             self.optimizer.step() #update params
             self.run.log({ #log results

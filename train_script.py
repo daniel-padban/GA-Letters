@@ -1,17 +1,16 @@
-from cProfile import label
-from sympy import subsets
 import torch.utils
 import torch.utils.data
 from torchvision.transforms import v2
 import json
 from torch.utils.data import DataLoader, Subset
 from model_def import CNN
-from dataset_def import load_csv_data, EMNISTDataset
 import torch
 import wandb
 from trainer_def import CNNTrainer
 from init_weights import init_model_w
 from torchvision.datasets import EMNIST
+import datetime
+
 
 device = ( #selects device
         'cuda'
@@ -64,7 +63,6 @@ for i in range(n_runs):
     train_subset_size = config_dict['train_size']
     #init wandb run
     run = wandb.init(name = f"Run-D{train_subset_size}-S{seed}-T-TorchD", config=config_dict,job_type='experimental run')
-    
     test_subset_size = config_dict['test_size']
     #subset train data
     train_indices = range(0,train_subset_size)
@@ -80,12 +78,15 @@ for i in range(n_runs):
     test_dataloader = DataLoader(dataset=test_dataset,batch_size=batch_size,shuffle=True, num_workers=n_workers)
 
     #get hyperparams from config
-    conv1= run.config['conv1']
-    ckernel1= run.config['ckernel1']
-    MPkernel1= run.config['MPkernel1']
-    conv2= run.config['conv2']
-    ckernel2= run.config['ckernel2']
-    MPkernel2= run.config['MPkernel2']
+    conv1 = run.config['conv1']
+    ckernel1 = run.config['ckernel1']
+    MPkernel1 = run.config['MPkernel1']
+    conv2 = run.config['conv2']
+    ckernel2 = run.config['ckernel2']
+    MPkernel2 = run.config['MPkernel2']
+    conv3 = run.config['conv3']
+    ckernel3 = run.config['ckernel3']
+    MPkernel3 = run.config['MPkernel3']
     fc1 = run.config['fc1']
 
     model = CNN(
@@ -96,11 +97,15 @@ for i in range(n_runs):
         conv2=conv2,
         ckernel2=ckernel2,
         MPkernel2=MPkernel2,
+        conv3=conv3,
+        ckernel3=ckernel3,
+        MPkernel3=MPkernel3,
         fc1=fc1,
         out_dim=26,
         input_HW=28,
         device=device
     )
+    run.watch(models=model,criterion=torch.nn.functional.cross_entropy,log='all')
     #model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True) #resnet18
     model.apply(init_model_w)
     model.to(device=device)
@@ -113,5 +118,6 @@ for i in range(n_runs):
                          train_dataloader=train_dataloader,
                          test_dataloader=test_dataloader,)
     trainer.full_epoch_loop(print_gradients=True)
+    model_state = torch.save(model.state_dict(),f'models/{datetime.datetime.now()}')
     run.finish(0)
 
