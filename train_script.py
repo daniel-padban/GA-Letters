@@ -118,6 +118,6 @@ for i in range(n_runs):
                          train_dataloader=train_dataloader,
                          test_dataloader=test_dataloader,)
     trainer.full_epoch_loop(print_gradients=True)
-    model_state = torch.save(model.state_dict(),f'models/{datetime.datetime.now()}')
+    torch.save(model,f'models/{datetime.datetime.now()}.pt')
     run.finish(0)
 
