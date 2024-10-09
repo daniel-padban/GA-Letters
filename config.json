@@ -1,5 +1,5 @@
 {
-    "train_size":130000,
+    "train_size":100000,
     "test_size":10000,
     "batch_size":72,
 
