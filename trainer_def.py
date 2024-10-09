@@ -4,16 +4,19 @@ import torch
 import torch.nn as nn
 import torch.utils
 import torch.utils.data
+import torcheval
+import torcheval.metrics
 import torcheval.metrics.functional as evalF
 from wandb.sdk.wandb_run import Run
 
 class CNNTrainer():
-    def __init__(self, run:Run, model:nn.Module,device:str,train_dataloader:torch.utils.data.DataLoader, test_dataloader:torch.utils.data.DataLoader) -> None:
+    def __init__(self, run:Run, model:nn.Module,device:str,train_dataloader:torch.utils.data.DataLoader, test_dataloader:torch.utils.data.DataLoader, report_freq:int=100) -> None:
         self.run = run
         self.train_dataloader = train_dataloader
         self.test_dataloader = test_dataloader
         self.model = model
         self.device = device
+        self.report_freq = report_freq
 
         self.lr = run.config['lr']
         self.w_decay = run.config['w_decay']
@@ -39,18 +42,19 @@ class CNNTrainer():
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.clip) #gradient clipping
 
             pred_probabilities = torch.softmax(preds,1)
-            most_probable = torch.argmax(pred_probabilities,1) #select highest probability of each class 
-            num_correct = (most_probable == y).sum().item()
-            accuracy = num_correct/(y.size(0))
+            accuracy = torcheval.metrics.MulticlassAccuracy()
+            F1 = torcheval.metrics.MulticlassF1Score()
+            accuracy.update(pred_probabilities,y)
+            F1.update(pred_probabilities,y)
 
-            #evalF.multiclass_accuracy(preds,y,average='macro')
-            
             self.optimizer.step() #update params
-            self.run.log({ #log results
-                "train_step":i+1+step_group,
-                "train_CO_loss":loss.item(),
-                "train_accuracy":accuracy
-            })
+            if i%self.report_freq == 0:
+                self.run.log({ #log results
+                    "train_step":i+1+step_group,
+                    "train_CO_loss":loss.item(),
+                    "train_accuracy":accuracy.compute(),
+                    "train_F1":F1.compute()
+                })
         mean_loss = running_loss/len(self.train_dataloader)
         return mean_loss
     
@@ -67,15 +71,19 @@ class CNNTrainer():
                 loss = self.loss_fn(preds,y)
 
                 pred_probabilities = torch.softmax(preds,1)
-                most_probable = torch.argmax(pred_probabilities,1) #select highest probability of each class 
-                num_correct = (most_probable == y).sum().item()
-                accuracy = num_correct/(y.size(0))
 
-                self.run.log({
-                    "test_step":i+1+step_group,
-                    "test_CO_loss":loss.item(),
-                    "test_accuracy":accuracy
-                })
+                accuracy = torcheval.metrics.MulticlassAccuracy()
+                F1 = torcheval.metrics.MulticlassF1Score()
+                
+                accuracy.update(pred_probabilities,y)
+                F1.update(pred_probabilities,y)
+                if i%self.report_freq == 0:
+                    self.run.log({
+                        "test_step":i+1+step_group,
+                        "test_CO_loss":loss.item(),
+                        "test_accuracy":accuracy.compute(),
+                        "test_F1":F1.compute()
+                    })
 
     def full_epoch_loop(self,print_gradients:bool=False):
         '''

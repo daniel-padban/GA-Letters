@@ -10,7 +10,7 @@ from trainer_def import CNNTrainer
 from init_weights import init_model_w
 from torchvision.datasets import EMNIST
 import datetime
-
+from torch.utils.tensorboard import SummaryWriter
 
 device = ( #selects device
         'cuda'
@@ -116,8 +116,14 @@ for i in range(n_runs):
                          model = model,
                          device=device,
                          train_dataloader=train_dataloader,
-                         test_dataloader=test_dataloader,)
+                         test_dataloader=test_dataloader,
+                         report_freq=100)
     trainer.full_epoch_loop(print_gradients=True)
-    torch.save(model.state_dict(),f'models/{datetime.datetime.now()}.pt')
+    torch.save(trainer.model.state_dict(),f'models/S{seed}-{datetime.datetime.now()}.pt')
+    writer = SummaryWriter(f'models/D1/S{seed}/',)
+    writer_input_batch, _ = next(iter(train_dataloader))
+    writer_input_batch:torch.Tensor 
+    writer_input_batch = writer_input_batch.to(device=device)
+    writer.add_graph(model=trainer.model,input_to_model=writer_input_batch)
     run.finish(0)
 

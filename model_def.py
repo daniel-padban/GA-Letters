@@ -74,8 +74,6 @@ class CNN(nn.Module):
         return (((HW-kernel + 2*0)/stride)+1)
 
     def forward(self, x:torch.Tensor):
-        x.requires_grad_()
-
         #Convolution-Pooling block 1:
         x = self.conv1(x)
         x = self.activation1(x)

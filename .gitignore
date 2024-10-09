@@ -5,3 +5,6 @@ AdrianVenv/
 EMNIST_data/
 wandb/
 torch_EMNIST/
+models/
+static/uploads/
+static/process_imgs/

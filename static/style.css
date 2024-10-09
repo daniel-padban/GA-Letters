@@ -1,0 +1,10 @@
+body{
+    background-color: rgb(67, 67, 67);
+}
+#controlPanel{
+    display: flex;
+}
+.action_button{
+    background-color: gray;
+    padding: 10px;
+}
