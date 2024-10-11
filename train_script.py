@@ -20,7 +20,7 @@ device = ( #selects device
         else 'cpu'
     )
 print(device)
-n_runs = 1
+n_runs = 10
 
 def read_config(config_path): #load config dictionary
     with open(config_path) as conf_file:
@@ -44,13 +44,14 @@ full_train_dataset = EMNIST('torch_EMNIST',
        download=True,
        transform = image_transform,
        target_transform = target_transform)
+print(full_train_dataset.__len__())
 full_test_dataset = EMNIST('torch_EMNIST',
        split='letters',
        train=False,
        download=True,
        transform = image_transform,
        target_transform = target_transform)
-
+print(full_test_dataset.__len__())
 
 for i in range(n_runs):
     #set random seeds for reproducibility
@@ -118,9 +119,9 @@ for i in range(n_runs):
                          train_dataloader=train_dataloader,
                          test_dataloader=test_dataloader,
                          report_freq=100)
-    trainer.full_epoch_loop(print_gradients=True)
+    trainer.full_epoch_loop(print_gradients=True,test_freq=5,)
     torch.save(trainer.model.state_dict(),f'models/S{seed}-{datetime.datetime.now()}.pt')
-    writer = SummaryWriter(f'models/D1/S{seed}/',)
+    writer = SummaryWriter(f'models/D5/S{seed}/',)
     writer_input_batch, _ = next(iter(train_dataloader))
     writer_input_batch:torch.Tensor 
     writer_input_batch = writer_input_batch.to(device=device)

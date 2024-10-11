@@ -1,6 +1,6 @@
 {
-    "train_size":100000,
-    "test_size":10000,
+    "train_size":120000,
+    "test_size":20800,
     "batch_size":72,
 
     "input_channels":1,
@@ -18,5 +18,5 @@
     "lr":3e-4,
     "w_decay":0.4,
     "clip":1,
-    "epochs":10
+    "epochs":12
 }

@@ -40,7 +40,6 @@ class CNNTrainer():
             running_loss += current_loss
             loss.backward() 
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.clip) #gradient clipping
-
             pred_probabilities = torch.softmax(preds,1)
             accuracy = torcheval.metrics.MulticlassAccuracy()
             F1 = torcheval.metrics.MulticlassF1Score()
@@ -52,8 +51,8 @@ class CNNTrainer():
                 self.run.log({ #log results
                     "train_step":i+1+step_group,
                     "train_CO_loss":loss.item(),
-                    "train_accuracy":accuracy.compute(),
-                    "train_F1":F1.compute()
+                    "train_accuracy":accuracy.compute().item(),
+                    "train_F1":F1.compute().item()
                 })
         mean_loss = running_loss/len(self.train_dataloader)
         return mean_loss
@@ -81,18 +80,21 @@ class CNNTrainer():
                     self.run.log({
                         "test_step":i+1+step_group,
                         "test_CO_loss":loss.item(),
-                        "test_accuracy":accuracy.compute(),
-                        "test_F1":F1.compute()
+                        "test_accuracy":accuracy.compute().item(),
+                        "test_F1":F1.compute().item()
                     })
 
-    def full_epoch_loop(self,print_gradients:bool=False):
+    def full_epoch_loop(self,test_freq:int,print_gradients:bool=False,):
         '''
         Run train & test loop
         '''
         for epoch in range(self.run.config['epochs']):
             print(f'Epoch:{epoch+1}')
             train_mean_loss = self._train_loop(epoch=epoch)
-            self._test_loop(epoch=epoch)
+            
+            if epoch%test_freq==0:
+                self._test_loop(epoch=epoch)
+            
             if print_gradients:
                 for name, param in self.model.named_parameters():
                     if param.grad is not None:

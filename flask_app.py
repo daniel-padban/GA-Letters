@@ -120,7 +120,6 @@ def predict():
 
     transformed_img:torch.Tensor = image_transform(resized_inv_image)
     transformed_img = transformed_img.unsqueeze(0)
-    
 
     model:torch.nn.Module = app.config['model']
     model.eval()
