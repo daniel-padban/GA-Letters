@@ -1,6 +1,6 @@
 {
-    "train_size":96000,
-    "data_group":"D4",
+    "train_size":120000,
+    "data_group":"D5",
     "test_size":20800,
     "batch_size":10,
 
@@ -19,5 +19,5 @@
     "lr":3e-4,
     "w_decay":0.4,
     "clip":1,
-    "epochs":15
+    "epochs":12
 }

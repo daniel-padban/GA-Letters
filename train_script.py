@@ -120,7 +120,7 @@ for i in range(start_n,n_runs):
                          train_dataloader=train_dataloader,
                          test_dataloader=test_dataloader,
                          report_freq=100)
-    trainer.full_epoch_loop(print_gradients=True,base_epochs=1.25,)
+    trainer.full_epoch_loop(print_gradients=True,base_epochs=1,)
     torch.save(trainer.model.state_dict(),f'models/S{seed}-{datetime.datetime.now()}.pt')
     writer = SummaryWriter(f'models/D5/S{seed}/',)
     writer_input_batch, _ = next(iter(train_dataloader))
