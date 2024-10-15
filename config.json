@@ -1,5 +1,6 @@
 {
     "train_size":120000,
+    "data_group":"D5",
     "test_size":20800,
     "batch_size":72,
 

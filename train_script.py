@@ -63,7 +63,7 @@ for i in range(n_runs):
 
     train_subset_size = config_dict['train_size']
     #init wandb run
-    run = wandb.init(name = f"Run-D{train_subset_size}-S{seed}-T-TorchD", config=config_dict,job_type='experimental run')
+    run = wandb.init(name = f"Run-D{train_subset_size}-S{seed}", config=config_dict,job_type='experimental run',group=config_dict['data_group'])
     test_subset_size = config_dict['test_size']
     #subset train data
     train_indices = range(0,train_subset_size)
