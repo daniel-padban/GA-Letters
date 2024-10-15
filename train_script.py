@@ -21,6 +21,7 @@ device = ( #selects device
     )
 print(device)
 n_runs = 10
+start_n=0
 
 def read_config(config_path): #load config dictionary
     with open(config_path) as conf_file:
@@ -53,7 +54,7 @@ full_test_dataset = EMNIST('torch_EMNIST',
        target_transform = target_transform)
 print(full_test_dataset.__len__())
 
-for i in range(n_runs):
+for i in range(start_n,n_runs):
     #set random seeds for reproducibility
     seed = 100*i + i
     print(f'---------- Run {seed} ----------')
@@ -119,7 +120,7 @@ for i in range(n_runs):
                          train_dataloader=train_dataloader,
                          test_dataloader=test_dataloader,
                          report_freq=100)
-    trainer.full_epoch_loop(print_gradients=True,base_epochs=1,)
+    trainer.full_epoch_loop(print_gradients=True,base_epochs=1.25,)
     torch.save(trainer.model.state_dict(),f'models/S{seed}-{datetime.datetime.now()}.pt')
     writer = SummaryWriter(f'models/D5/S{seed}/',)
     writer_input_batch, _ = next(iter(train_dataloader))
