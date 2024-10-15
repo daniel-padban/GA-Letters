@@ -84,7 +84,7 @@ class CNNTrainer():
                         "test_F1":F1.compute().item()
                     })
 
-    def full_epoch_loop(self,test_freq:int,print_gradients:bool=False,):
+    def full_epoch_loop(self,base_epochs:int,print_gradients:bool=False,):
         '''
         Run train & test loop
         '''
@@ -92,7 +92,7 @@ class CNNTrainer():
             print(f'Epoch:{epoch+1}')
             train_mean_loss = self._train_loop(epoch=epoch)
             
-            if epoch%test_freq==0:
+            if epoch%base_epochs==0:
                 self._test_loop(epoch=epoch)
             
             if print_gradients:
