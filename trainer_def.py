@@ -91,9 +91,8 @@ class CNNTrainer():
         for epoch in range(self.run.config['epochs']):
             print(f'Epoch:{epoch+1}')
             train_mean_loss = self._train_loop(epoch=epoch)
-            
-            if epoch%base_epochs==0:
-                self._test_loop(epoch=epoch)
+
+            self._test_loop(epoch=epoch)
             
             if print_gradients:
                 for name, param in self.model.named_parameters():
