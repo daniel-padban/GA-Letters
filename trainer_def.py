@@ -57,10 +57,10 @@ class CNNTrainer():
         mean_loss = running_loss/len(self.train_dataloader)
         return mean_loss
     
-    def _test_loop(self,epoch):
+    def _test_loop(self,epoch,base_epoch):
         self.model.eval()    
         with torch.no_grad():
-            step_group = epoch*len(self.test_dataloader) # calculates how many steps have been processed already, start for count, epoch starts at 0
+            step_group = (epoch/base_epoch)*len(self.test_dataloader) # calculates how many steps have been processed already, start for count, epoch starts at 0
             for i, (X,y) in enumerate(self.test_dataloader):
                 #X = X.repeat(1,3,1,1) #for resnet
                 X = X.to(device=self.device)
@@ -93,7 +93,7 @@ class CNNTrainer():
             train_mean_loss = self._train_loop(epoch=epoch)
             
             if (epoch+1)%base_epochs==0:
-                self._test_loop(epoch=epoch)
+                self._test_loop(epoch=epoch,base_epoch=base_epochs)
             
             if print_gradients:
                 for name, param in self.model.named_parameters():
