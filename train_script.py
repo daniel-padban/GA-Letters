@@ -28,7 +28,7 @@ if __name__ == '__main__':
     n_runs = 10
     start_n=0
 
-    def read_config(config_path): #load config dictionary
+    def read_config(config_path) -> dict: #load config dictionary
         with open(config_path) as conf_file:
             config_dict = json.load(conf_file)
             return config_dict 
@@ -125,7 +125,7 @@ if __name__ == '__main__':
                             train_dataloader=train_dataloader,
                             test_dataloader=test_dataloader,
                             report_freq=100)
-        trainer.full_epoch_loop(print_gradients=True,base_epochs=1,)
+        trainer.full_epoch_loop(print_gradients=True,base_epochs=config_dict.get('base_epochs'))
         torch.save(trainer.model.state_dict(),f'models/S{seed}-{datetime.datetime.now()}.pt')
         writer = SummaryWriter(f'models/D5/S{seed}/',)
         writer_input_batch, _ = next(iter(train_dataloader))
@@ -133,4 +133,3 @@ if __name__ == '__main__':
         writer_input_batch = writer_input_batch.to(device=device)
         writer.add_graph(model=trainer.model,input_to_model=writer_input_batch)
         run.finish(0)
-
