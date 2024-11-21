@@ -1,9 +1,9 @@
 {
-    "train_size":60000,
-    "data_group":"D4",
+    "train_size":40000,
+    "data_group":"D3",
     "test_size":20800,
     "batch_size":10,
-    "base_epochs":2,
+    "base_epochs":3,
 
     "input_channels":1,
     "conv1":32,
@@ -20,5 +20,5 @@
     "lr":3e-4,
     "w_decay":0.4,
     "clip":1,
-    "epochs":24
+    "epochs":36
 }
