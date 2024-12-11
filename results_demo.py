@@ -1,4 +1,5 @@
 import wandb
+import pandas as pd
  
 def download_wandb_project_data(entity_name:str, project_name:str,group:str):
     """
@@ -38,8 +39,7 @@ def download_wandb_project_data(entity_name:str, project_name:str,group:str):
             
             # Get run history
             history = run.history()
-            
-            
+            rel_history = history['_step','train_step','train_F1','train_accuracy','train_CO_loss','test_step','test_F1','test_accuracy','test_CO_loss']
             # Get run config
             config = run.config
             
@@ -60,4 +60,5 @@ def download_wandb_project_data(entity_name:str, project_name:str,group:str):
 
 if __name__ == "__main__":
     data = download_wandb_project_data("DP-Team", "GA-Letters", group="D5")
+    histories = data['histories']
     print(data)

@@ -2,7 +2,7 @@
     "train_size":24000,
     "data_group":"D1",
     "test_size":20800,
-    "batch_size":10,
+    "batch_size":72,
     "base_epochs":5,
 
     "input_channels":1,
