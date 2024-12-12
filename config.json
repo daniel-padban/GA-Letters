@@ -2,10 +2,10 @@
     "test_size":20800,
     
     "batch_size":72,
-    "data_group":"B5",
+    "data_group":"B4",
     "train_size":2400,
-    "epochs":60,
-    "base_epochs":5,
+    "epochs":48,
+    "base_epochs":4,
 
     "input_channels":1,
     "conv1":32,
