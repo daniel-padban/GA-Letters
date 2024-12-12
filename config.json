@@ -3,7 +3,7 @@
     
     "batch_size":72,
     "data_group":"B4",
-    "train_size":2400,
+    "train_size":3000,
     "epochs":48,
     "base_epochs":4,
 
