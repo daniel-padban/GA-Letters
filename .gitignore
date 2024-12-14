@@ -8,3 +8,4 @@ torch_EMNIST/
 models/
 static/uploads/
 static/process_imgs/
+results/
