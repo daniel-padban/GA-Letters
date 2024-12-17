@@ -3,7 +3,7 @@ import torch.utils.data
 from torchvision.transforms import v2
 import json
 from torch.utils.data import DataLoader, Subset
-from model_def import CNN
+from modelC3 import CNN
 import torch
 import wandb
 from trainer_def import CNNTrainer

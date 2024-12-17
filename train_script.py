@@ -7,7 +7,7 @@ if __name__ == '__main__':
     from torchvision.transforms import v2
     import json
     from torch.utils.data import DataLoader, Subset
-    from model_def import CNN
+    from modelC3 import CNN
     import torch
     import wandb
     from trainer_def import CNNTrainer
@@ -124,7 +124,7 @@ if __name__ == '__main__':
                             device=device,
                             train_dataloader=train_dataloader,
                             test_dataloader=test_dataloader,
-                            report_freq=100)
+                            report_freq=200)
         trainer.full_epoch_loop(print_gradients=True,base_epochs=config_dict.get('base_epochs'))
         torch.save(trainer.model.state_dict(),f'models/S{seed}-{datetime.datetime.now()}.pt')
         writer = SummaryWriter(f'models/D5/S{seed}/',)

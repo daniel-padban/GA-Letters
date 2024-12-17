@@ -1,5 +1,5 @@
 import torch
-from model_def import CNN
+from modelC3 import CNN
 import PIL
 import torchvision.transforms.v2 as v2
 

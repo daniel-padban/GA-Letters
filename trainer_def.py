@@ -10,13 +10,14 @@ import torcheval.metrics.functional as evalF
 from wandb.sdk.wandb_run import Run
 
 class CNNTrainer():
-    def __init__(self, run:Run, model:nn.Module,device:str,train_dataloader:torch.utils.data.DataLoader, test_dataloader:torch.utils.data.DataLoader, report_freq:int=100) -> None:
+    def __init__(self, run:Run, model:nn.Module,device:str,train_dataloader:torch.utils.data.DataLoader, test_dataloader:torch.utils.data.DataLoader, report_freq:int=100,test_r_freq:int=100) -> None:
         self.run = run
         self.train_dataloader = train_dataloader
         self.test_dataloader = test_dataloader
         self.model = model
         self.device = device
         self.report_freq = report_freq
+        self.test_r_freq = test_r_freq
 
         self.lr = run.config['lr']
         self.w_decay = run.config['w_decay']
@@ -57,7 +58,7 @@ class CNNTrainer():
         mean_loss = running_loss/len(self.train_dataloader)
         return mean_loss
     
-    def _test_loop(self,epoch,base_epoch):
+    def _test_loop(self,epoch,base_epoch,r_freq):
         self.model.eval()    
         with torch.no_grad():
             step_group = (epoch/base_epoch)*len(self.test_dataloader) # calculates how many steps have been processed already, start for count, epoch starts at 0
@@ -76,7 +77,7 @@ class CNNTrainer():
                 
                 accuracy.update(pred_probabilities,y)
                 F1.update(pred_probabilities,y)
-                if i%self.report_freq == 0:
+                if i%self.test_r_freq == 0:
                     self.run.log({
                         "test_step":i+1+step_group,
                         "test_CO_loss":loss.item(),

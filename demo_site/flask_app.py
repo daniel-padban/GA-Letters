@@ -11,7 +11,7 @@ import torchvision.transforms.v2 as v2
 import torchvision.transforms.functional as tvF
 import numpy as np
 import json
-from model_def import CNN
+from modelC3 import CNN
 
 app = Flask(__name__)
 app.secret_key = 'A_SECRET1099'
