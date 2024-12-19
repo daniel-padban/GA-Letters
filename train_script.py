@@ -9,12 +9,14 @@ def read_config(config_path) -> dict: #load config dictionary
             return config_dict 
         
 print('starting training')
+
+import sys
 if __name__ == '__main__':
     dataset_config = read_config('datasets.json')
     set_prefix = 'B'
     n_sets = 11
-    sets_start = 11
-    sets_end = 7
+    sets_start = 7
+    sets_end = 11
 
     if sets_end > n_sets:
         raise ValueError('sets_ end')
