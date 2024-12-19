@@ -13,8 +13,8 @@ if __name__ == '__main__':
     dataset_config = read_config('datasets.json')
     set_prefix = 'B'
     n_sets = 11
-    sets_start = 1
-    sets_end = 6
+    sets_start = 11
+    sets_end = 7
 
     if sets_end > n_sets:
         raise ValueError('sets_ end')
