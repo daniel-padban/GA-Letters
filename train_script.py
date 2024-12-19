@@ -146,10 +146,10 @@ if __name__ == '__main__':
                                 test_dataloader=test_dataloader,
                                 report_freq=200)
             trainer.full_epoch_loop(print_gradients=True,base_epochs=config_dict.get('base_epochs'))
-            torch.save(trainer.model.state_dict(),f'models/S{seed}-{datetime.datetime.now()}.pt')
+            '''torch.save(trainer.model.state_dict(),f'models/S{seed}-{datetime.datetime.now()}.pt')
             writer = SummaryWriter(f'models/D5/S{seed}/',)
             writer_input_batch, _ = next(iter(train_dataloader))
             writer_input_batch:torch.Tensor 
             writer_input_batch = writer_input_batch.to(device=device)
             writer.add_graph(model=trainer.model,input_to_model=writer_input_batch)
-            run.finish(0)
+            run.finish(0)'''
