@@ -55,7 +55,7 @@ class CNNTrainer():
         mean_loss = running_loss/len(self.train_dataloader)
         return mean_loss
     
-    def _test_loop(self,epoch,base_epochs,r_freq):
+    def _test_loop(self,epoch,base_epochs):
         self.model.eval()    
         with torch.no_grad():
             step_group = (epoch/base_epochs)*len(self.test_dataloader) # calculates how many steps have been processed already, start for count, epoch starts at 0
