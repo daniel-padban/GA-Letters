@@ -8,7 +8,7 @@ def read_config(config_path) -> dict: #load config dictionary
             config_dict = json.load(conf_file)
             return config_dict 
         
-
+print('starting training')
 if __name__ == '__main__':
     dataset_config = read_config('datasets.json')
     set_prefix = 'B'
