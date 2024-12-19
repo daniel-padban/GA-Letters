@@ -151,5 +151,5 @@ if __name__ == '__main__':
             writer_input_batch, _ = next(iter(train_dataloader))
             writer_input_batch:torch.Tensor 
             writer_input_batch = writer_input_batch.to(device=device)
-            writer.add_graph(model=trainer.model,input_to_model=writer_input_batch)
-            run.finish(0)'''
+            writer.add_graph(model=trainer.model,input_to_model=writer_input_batch)'''
+            run.finish(0)
