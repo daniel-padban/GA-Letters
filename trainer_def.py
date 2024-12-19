@@ -1,13 +1,9 @@
-from email.mime import base
-import trace
-from numpy import mean
 import torch
 import torch.nn as nn
 import torch.utils
 import torch.utils.data
 import torcheval
 import torcheval.metrics
-import torcheval.metrics.functional as evalF
 from wandb.sdk.wandb_run import Run
 
 class CNNTrainer():
