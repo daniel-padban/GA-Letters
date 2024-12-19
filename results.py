@@ -239,7 +239,7 @@ if __name__ == "__main__":
         train_aggs[group] = train_agg
 
     test_F1s = [test_aggs[group][:,[0,1]] for group in groups]
-    test_accs = [test_aggs[group][:,[0,2]]*100 for group in groups] # *100 for percentage
+    test_accs = [test_aggs[group][:,[0,2]] for group in groups] # *100 for percentage
     test_CO_losses =[test_aggs[group][:,[0,3]] for group in groups]
 
     train_F1s = [train_aggs[group][:,[0,1]] for group in groups]
@@ -250,9 +250,9 @@ if __name__ == "__main__":
     test_acc_x, test_acc_y, test_acc_z = create_data2plot(test_accs,train_sizes)
     test_CO_x, test_CO_y, test_CO_z = create_data2plot(test_CO_losses,train_sizes)
 
-    train_f1_x,train_f1_y,train_f1_z = create_data2plot(train_F1s,train_sizes)
+    '''train_f1_x,train_f1_y,train_f1_z = create_data2plot(train_F1s,train_sizes)
     train_acc_x, train_acc_y, train_acc_z = create_data2plot(train_accs,train_sizes)
-    train_CO_x, train_CO_y, train_CO_z = create_data2plot(train_CO_losses,train_sizes)
+    train_CO_x, train_CO_y, train_CO_z = create_data2plot(train_CO_losses,train_sizes)'''
 
 # Generate and save the plots
     plotly_test_F1 = create_3d_plot(test_f1_x, test_f1_y, test_f1_z, 
@@ -260,7 +260,7 @@ if __name__ == "__main__":
                                     'Test F1, Dataset Size, Steps', 
                                     "graphs/test_f1_plot.html")
 
-    plotly_test_acc = create_3d_plot(test_acc_x, test_acc_y, test_acc_z, 
+    plotly_test_acc = create_3d_plot(test_acc_x, test_acc_y, test_acc_z*100, 
                                     'Size', 'Steps', 'Accuracy %', 
                                     'Test Accuracy, Dataset Size, Steps', 
                                     "graphs/test_acc_plot.html")
@@ -270,12 +270,12 @@ if __name__ == "__main__":
                                     'Test Cross Entropy, Dataset Size, Steps', 
                                     "graphs/test_CO_plot.html")
 
-    plotly_train_F1 = create_3d_plot(train_f1_x, train_f1_y, train_f1_z, 
+    '''plotly_train_F1 = create_3d_plot(train_f1_x, train_f1_y, train_f1_z, 
                                     'Size', 'Steps', 'F1', 
                                     'Train F1, Dataset Size, Steps', 
                                     "graphs/train_f1_plot.html")
 
-    plotly_train_acc = create_3d_plot(train_acc_x, train_acc_y, train_acc_z, 
+    plotly_train_acc = create_3d_plot(train_acc_x, train_acc_y, train_acc_z*100, 
                                     'Size', 'Steps', 'Accuracy %', 
                                     'Train Accuracy, Dataset Size, Steps', 
                                     "graphs/train_acc_plot.html")
@@ -283,11 +283,11 @@ if __name__ == "__main__":
     plotly_train_CO = create_3d_plot(train_CO_x, train_CO_y, train_CO_z, 
                                     'Size', 'Steps', 'Cross Entropy Loss', 
                                     'Train Cross Entropy, Dataset Size, Steps', 
-                                    "graphs/train_CO_plot.html")
+                                    "graphs/train_CO_plot.html")'''
 
-    plotly_2d_F1 = create_line_plot(x=test_CO_x,test_y=last_mean(test_f1_z,3),train_y=last_mean(train_f1_z,3),xlabel='Size',ylabel='F1',title='F1',filename='graphs/2d_F1_plot.html')
+    #plotly_2d_F1 = create_line_plot(x=test_CO_x,test_y=last_mean(test_f1_z,3),train_y=last_mean(train_f1_z,3),xlabel='Size',ylabel='F1',title='F1',filename='graphs/2d_F1_plot.html')
+    plotly_test_acc.show()
 
 
     # Display one of the plots (optional)
-    plotly_2d_F1.show()
 
