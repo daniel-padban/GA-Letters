@@ -1,13 +1,9 @@
-from re import A
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
-import plotly.graph_objects
 import wandb
 import pandas as pd
 import numpy as np
 import os
 import plotly.io as pio
-from plotly.tools import mpl_to_plotly
  
 def download_wandb_project_data(entity_name:str, project_name:str,group:str):
     """
@@ -134,7 +130,7 @@ def create_data2plot(data_list:list[np.ndarray],sizes):
     return x_arr, y_arr, z_arr
 
 def create_3d_plot(x, y, z, xlabel, ylabel, zlabel, title, filename):
-        fig = go.Figure(data=[go.Surface(z=z, x=x, y=y, colorscale='Viridis')])
+        fig = go.Figure(data=[go.Surface(z=z, x=x, y=y, colorscale='emrld')])
         fig.update_layout(
             scene=dict(
                 xaxis_title=xlabel,
@@ -197,7 +193,6 @@ if __name__ == "__main__":
 
         names = [f'Run-D{group_sizes[group]}-S{100*i+i}' for i in range(10)]
         
-        histories = []
         file_groups = {}
         for filename in os.listdir(f'results/{group}'):
             # Extract the prefix and base name
@@ -209,6 +204,7 @@ if __name__ == "__main__":
                 file_groups.setdefault(base_name, {})["train"] = filename
 
 # Create tuples of (test_df, train_df)
+        histories = []
         for base_name, files in file_groups.items():
             if "test" in files and "train" in files:
                 test_file_path = os.path.join('results', group, files["test"])
@@ -240,19 +236,19 @@ if __name__ == "__main__":
 
     test_F1s = [test_aggs[group][:,[0,1]] for group in groups]
     test_accs = [test_aggs[group][:,[0,2]] for group in groups] # *100 for percentage
-    test_CO_losses =[test_aggs[group][:,[0,3]] for group in groups]
+    test_CE_losses =[test_aggs[group][:,[0,3]] for group in groups]
 
     train_F1s = [train_aggs[group][:,[0,1]] for group in groups]
-    train_accs = [train_aggs[group][:,[0,2]]*100 for group in groups] # *100 for percentage
-    train_CO_losses =[train_aggs[group][:,[0,3]] for group in groups]
+    train_accs = [train_aggs[group][:,[0,2]] for group in groups] # *100 for percentage
+    train_CE_losses =[train_aggs[group][:,[0,3]] for group in groups]
 
     test_f1_x,test_f1_y,test_f1_z = create_data2plot(test_F1s,train_sizes)
     test_acc_x, test_acc_y, test_acc_z = create_data2plot(test_accs,train_sizes)
-    test_CO_x, test_CO_y, test_CO_z = create_data2plot(test_CO_losses,train_sizes)
+    test_CE_x, test_CE_y, test_CE_z = create_data2plot(test_CE_losses,train_sizes)
 
-    '''train_f1_x,train_f1_y,train_f1_z = create_data2plot(train_F1s,train_sizes)
+    train_f1_x,train_f1_y,train_f1_z = create_data2plot(train_F1s,train_sizes)
     train_acc_x, train_acc_y, train_acc_z = create_data2plot(train_accs,train_sizes)
-    train_CO_x, train_CO_y, train_CO_z = create_data2plot(train_CO_losses,train_sizes)'''
+    train_CE_x, train_CE_y, train_CE_z = create_data2plot(train_CE_losses,train_sizes)
 
 # Generate and save the plots
     plotly_test_F1 = create_3d_plot(test_f1_x, test_f1_y, test_f1_z, 
@@ -265,12 +261,12 @@ if __name__ == "__main__":
                                     'Test Accuracy, Dataset Size, Steps', 
                                     "graphs/test_acc_plot.html")
 
-    plotly_test_CO = create_3d_plot(test_CO_x, test_CO_y, test_CO_z, 
+    plotly_test_CE = create_3d_plot(test_CE_x, test_CE_y, test_CE_z, 
                                     'Size', 'Steps', 'Cross Entropy Loss', 
                                     'Test Cross Entropy, Dataset Size, Steps', 
-                                    "graphs/test_CO_plot.html")
+                                    "graphs/test_CE_plot.html")
 
-    '''plotly_train_F1 = create_3d_plot(train_f1_x, train_f1_y, train_f1_z, 
+    plotly_train_F1 = create_3d_plot(train_f1_x, train_f1_y, train_f1_z, 
                                     'Size', 'Steps', 'F1', 
                                     'Train F1, Dataset Size, Steps', 
                                     "graphs/train_f1_plot.html")
@@ -280,13 +276,17 @@ if __name__ == "__main__":
                                     'Train Accuracy, Dataset Size, Steps', 
                                     "graphs/train_acc_plot.html")
 
-    plotly_train_CO = create_3d_plot(train_CO_x, train_CO_y, train_CO_z, 
+    plotly_train_CE = create_3d_plot(train_CE_x, train_CE_y, train_CE_z, 
                                     'Size', 'Steps', 'Cross Entropy Loss', 
                                     'Train Cross Entropy, Dataset Size, Steps', 
-                                    "graphs/train_CO_plot.html")'''
+                                    "graphs/train_CE_plot.html")
 
-    #plotly_2d_F1 = create_line_plot(x=test_CO_x,test_y=last_mean(test_f1_z,3),train_y=last_mean(train_f1_z,3),xlabel='Size',ylabel='F1',title='F1',filename='graphs/2d_F1_plot.html')
-    plotly_test_acc.show()
+    plotly_2d_F1 = create_line_plot(x=test_CE_x,test_y=last_mean(test_f1_z,3),train_y=last_mean(train_f1_z,3),xlabel='Size',ylabel='F1',title='F1',filename='graphs/2d_F1_plot.html')
+    plotly_2d_acc = create_line_plot(x=test_CE_x,test_y=last_mean(test_acc_z*100,3),train_y=last_mean(train_acc_z*100,3),xlabel='Size',ylabel='Accuracy %',title='F1',filename='graphs/2d_acc_plot.html')
+    plotly_2d_CE = create_line_plot(x=test_CE_x,test_y=last_mean(test_CE_z,3),train_y=last_mean(train_CE_z,3),xlabel='Size',ylabel='F1',title='Cross Entropy',filename='graphs/2d_CE_plot.html')
+    
+    plotly_2d_F1.show()
+    plotly_test_F1.show()
 
 
     # Display one of the plots (optional)
