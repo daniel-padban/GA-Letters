@@ -10,7 +10,6 @@ def read_config(config_path) -> dict: #load config dictionary
         
 print('starting training')
 
-import sys
 if __name__ == '__main__':
     dataset_config = read_config('datasets.json')
     set_prefix = 'B'
@@ -19,7 +18,7 @@ if __name__ == '__main__':
     sets_end = 11
 
     if sets_end > n_sets:
-        raise ValueError('sets_ end')
+        raise ValueError('sets_end')
 
     for dataset_n in range(sets_start,sets_end+1):
         data_group  = set_prefix+str(dataset_n)
@@ -36,7 +35,7 @@ if __name__ == '__main__':
         from torchvision.transforms import v2
         import json
         from torch.utils.data import DataLoader, Subset
-        from modelC3 import CNN
+        from model_defs.modelC3 import CNN
         import torch
         import wandb
         from trainer_def import CNNTrainer
@@ -44,7 +43,6 @@ if __name__ == '__main__':
         from torchvision.datasets import EMNIST
         import datetime
         from torch.utils.tensorboard import SummaryWriter
-        
 
         device = ( #selects device
                 'cuda'
