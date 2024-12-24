@@ -9,3 +9,7 @@ models/
 static/uploads/
 static/process_imgs/
 results/
+demo_site/
+demo_site/static
+demo_site/templates
+*.html
