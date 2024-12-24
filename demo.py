@@ -2,13 +2,11 @@ import PIL
 import PIL.ImageOps
 from matplotlib import axes
 import torch
-from modelC3 import CNN
-import torch.nn as nn
+from model_defs.modelC3 import CNN
 import json
 import PIL
 import torchvision.transforms.v2 as v2
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 device = ( #selects device
