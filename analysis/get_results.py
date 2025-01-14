@@ -264,32 +264,32 @@ if __name__ == "__main__":
 
 # Generate and save the plots
     plotly_test_F1 = results_creator.create_3d_plot(test_f1_x, test_f1_y, test_f1_z, 
-                                    'Size', 'Steps', 'F1', 
+                                    'Size', 'Epochs', 'F1', 
                                     'Test F1, Dataset Size, Steps', 
                                     "graphs/test_f1_plot.html")
 
     plotly_test_acc = results_creator.create_3d_plot(test_acc_x, test_acc_y, test_acc_z*100, 
-                                    'Size', 'Steps', 'Accuracy %', 
+                                    'Size', 'Epochs', 'Accuracy %', 
                                     'Test Accuracy, Dataset Size, Steps', 
                                     "graphs/test_acc_plot.html")
 
     plotly_test_CE = results_creator.create_3d_plot(test_CE_x, test_CE_y, test_CE_z, 
-                                    'Size', 'Steps', 'Cross Entropy Loss', 
+                                    'Size', 'Epochs', 'Cross Entropy Loss', 
                                     'Test Cross Entropy, Dataset Size, Steps', 
                                     "graphs/test_CE_plot.html")
 
     plotly_train_F1 = results_creator.create_3d_plot(train_f1_x, train_f1_y, train_f1_z, 
-                                    'Size', 'Steps', 'F1', 
+                                    'Size', 'Epochs', 'F1', 
                                     'Train F1, Dataset Size, Steps', 
                                     "graphs/train_f1_plot.html")
 
     plotly_train_acc = results_creator.create_3d_plot(train_acc_x, train_acc_y, train_acc_z*100, 
-                                    'Size', 'Steps', 'Accuracy %', 
+                                    'Size', 'Epochs', 'Accuracy %', 
                                     'Train Accuracy, Dataset Size, Steps', 
                                     "graphs/train_acc_plot.html")
 
     plotly_train_CE = results_creator.create_3d_plot(train_CE_x, train_CE_y, train_CE_z, 
-                                    'Size', 'Steps', 'Cross Entropy Loss', 
+                                    'Size', 'Epochs', 'Cross Entropy Loss', 
                                     'Train Cross Entropy, Dataset Size, Steps', 
                                     "graphs/train_CE_plot.html")
 
