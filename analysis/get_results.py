@@ -136,13 +136,19 @@ class resultsMaker():
 
     def create_3d_plot(self,x, y, z, xlabel, ylabel, zlabel, title, filename):
             fig = go.Figure(data=[go.Surface(z=z, x=x, y=y, colorscale='emrld')])
+            camera = dict(
+            eye=dict(x=-1.5, y=-1.5, z=1),  # Position of the camera
+            center=dict(x=0, y=0, z=0),        # Focus point of the camera
+            up=dict(x=0, y=0, z=1)             # Upward direction of the camera
+            )
             fig.update_layout(
                 scene=dict(
                     xaxis_title=xlabel,
                     yaxis_title=ylabel,
                     zaxis_title=zlabel,
                 ),
-                title=title
+                title=title,
+                scene_camera = camera,
             )
             pio.write_html(fig, file=filename)
             return fig
@@ -293,11 +299,6 @@ if __name__ == "__main__":
                                     'Train Cross Entropy, Dataset Size, Steps', 
                                     "graphs/train_CE_plot.html")
 
-    plotly_2d_F1 = results_creator.create_line_plot(x=test_CE_x,test_y=results_creator.last_mean(test_f1_z,3),train_y=results_creator.last_mean(train_f1_z,3),xlabel='Size',ylabel='F1',title='F1',filename='graphs/2d_F1_plot.html')
-    plotly_2d_acc = results_creator.create_line_plot(x=test_CE_x,test_y=results_creator.last_mean(test_acc_z*100,3),train_y=results_creator.last_mean(train_acc_z*100,3),xlabel='Size',ylabel='Accuracy %',title='F1',filename='graphs/2d_acc_plot.html')
-    plotly_2d_CE = results_creator.create_line_plot(x=test_CE_x,test_y=results_creator.last_mean(test_CE_z,3),train_y=results_creator.last_mean(train_CE_z,3),xlabel='Size',ylabel='F1',title='Cross Entropy',filename='graphs/2d_CE_plot.html')
-    
-    plotly_2d_F1.show()
     plotly_test_F1.show()
 
 
