@@ -1,0 +1,25 @@
+{
+    "test_size":20800,
+    
+    "batch_size":72,
+    "data_group":"B1",
+    "train_size":12000,
+    "epochs":12,
+    "base_epochs":1,
+
+    "input_channels":1,
+    "conv1":32,
+    "ckernel1":5,
+    "MPkernel1":2,
+    "conv2":64,
+    "ckernel2":5,
+    "MPkernel2":2,
+    "conv3":128,
+    "ckernel3":5,
+    "MPkernel3":2,
+    "fc1":256,
+
+    "lr":3e-4,
+    "w_decay":0.4,
+    "clip":1
+}

@@ -1,0 +1,156 @@
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:               train_F1   R-squared:                       0.133
+Model:                            OLS   Adj. R-squared:                  0.037
+Method:                 Least Squares   F-statistic:                     1.383
+Date:                Tue, 14 Jan 2025   Prob (F-statistic):              0.270
+Time:                        01:44:25   Log-Likelihood:                 25.808
+No. Observations:                  11   AIC:                            -47.62
+Df Residuals:                       9   BIC:                            -46.82
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const           0.6113      0.071      8.563      0.000       0.450       0.773
+log_dataset    -0.0250      0.021     -1.176      0.270      -0.073       0.023
+==============================================================================
+Omnibus:                        4.636   Durbin-Watson:                   1.916
+Prob(Omnibus):                  0.098   Jarque-Bera (JB):                1.721
+Skew:                          -0.916   Prob(JB):                        0.423
+Kurtosis:                       3.632   Cond. No.                         33.7
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:         train_accuracy   R-squared:                       0.133
+Model:                            OLS   Adj. R-squared:                  0.037
+Method:                 Least Squares   F-statistic:                     1.383
+Date:                Tue, 14 Jan 2025   Prob (F-statistic):              0.270
+Time:                        01:44:25   Log-Likelihood:                 25.808
+No. Observations:                  11   AIC:                            -47.62
+Df Residuals:                       9   BIC:                            -46.82
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const           0.6113      0.071      8.563      0.000       0.450       0.773
+log_dataset    -0.0250      0.021     -1.176      0.270      -0.073       0.023
+==============================================================================
+Omnibus:                        4.636   Durbin-Watson:                   1.916
+Prob(Omnibus):                  0.098   Jarque-Bera (JB):                1.721
+Skew:                          -0.916   Prob(JB):                        0.423
+Kurtosis:                       3.632   Cond. No.                         33.7
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+                             OLS Regression Results                            
+===============================================================================
+Dep. Variable:     train_cross_entropy   R-squared:                       0.024
+Model:                             OLS   Adj. R-squared:                 -0.084
+Method:                  Least Squares   F-statistic:                    0.2257
+Date:                 Tue, 14 Jan 2025   Prob (F-statistic):              0.646
+Time:                         01:44:25   Log-Likelihood:                 11.797
+No. Observations:                   11   AIC:                            -19.59
+Df Residuals:                        9   BIC:                            -18.80
+Df Model:                            1                                         
+Covariance Type:             nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const           1.4868      0.255      5.828      0.000       0.910       2.064
+log_dataset     0.0362      0.076      0.475      0.646      -0.136       0.208
+==============================================================================
+Omnibus:                        2.988   Durbin-Watson:                   2.121
+Prob(Omnibus):                  0.224   Jarque-Bera (JB):                0.734
+Skew:                           0.548   Prob(JB):                        0.693
+Kurtosis:                       3.634   Cond. No.                         33.7
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                test_F1   R-squared:                       0.848
+Model:                            OLS   Adj. R-squared:                  0.832
+Method:                 Least Squares   F-statistic:                     50.39
+Date:                Tue, 14 Jan 2025   Prob (F-statistic):           5.68e-05
+Time:                        01:44:25   Log-Likelihood:                 28.456
+No. Observations:                  11   AIC:                            -52.91
+Df Residuals:                       9   BIC:                            -52.12
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const           0.4344      0.056      7.742      0.000       0.307       0.561
+log_dataset     0.1188      0.017      7.099      0.000       0.081       0.157
+==============================================================================
+Omnibus:                        0.025   Durbin-Watson:                   2.231
+Prob(Omnibus):                  0.988   Jarque-Bera (JB):                0.211
+Skew:                          -0.085   Prob(JB):                        0.900
+Kurtosis:                       2.343   Cond. No.                         33.7
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:          test_accuracy   R-squared:                       0.848
+Model:                            OLS   Adj. R-squared:                  0.832
+Method:                 Least Squares   F-statistic:                     50.39
+Date:                Tue, 14 Jan 2025   Prob (F-statistic):           5.68e-05
+Time:                        01:44:25   Log-Likelihood:                 28.456
+No. Observations:                  11   AIC:                            -52.91
+Df Residuals:                       9   BIC:                            -52.12
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const           0.4344      0.056      7.742      0.000       0.307       0.561
+log_dataset     0.1188      0.017      7.099      0.000       0.081       0.157
+==============================================================================
+Omnibus:                        0.025   Durbin-Watson:                   2.231
+Prob(Omnibus):                  0.988   Jarque-Bera (JB):                0.211
+Skew:                          -0.085   Prob(JB):                        0.900
+Kurtosis:                       2.343   Cond. No.                         33.7
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:     test_cross_entropy   R-squared:                       0.801
+Model:                            OLS   Adj. R-squared:                  0.779
+Method:                 Least Squares   F-statistic:                     36.21
+Date:                Tue, 14 Jan 2025   Prob (F-statistic):           0.000198
+Time:                        01:44:25   Log-Likelihood:                 12.185
+No. Observations:                  11   AIC:                            -20.37
+Df Residuals:                       9   BIC:                            -19.57
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const           2.0592      0.246      8.361      0.000       1.502       2.616
+log_dataset    -0.4422      0.073     -6.018      0.000      -0.608      -0.276
+==============================================================================
+Omnibus:                        0.130   Durbin-Watson:                   1.859
+Prob(Omnibus):                  0.937   Jarque-Bera (JB):                0.316
+Skew:                           0.170   Prob(JB):                        0.854
+Kurtosis:                       2.242   Cond. No.                         33.7
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.

@@ -2,7 +2,7 @@ import PIL
 import PIL.ImageOps
 from matplotlib import axes
 import torch
-from model_defs.modelC3 import CNN
+from experiment.modelC3 import CNN
 import json
 import PIL
 import torchvision.transforms.v2 as v2
