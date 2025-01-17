@@ -5,10 +5,6 @@ import pandas as pd
 import plotly.express as px
 import statsmodels.api as sm
 
-
-
-
-
 def create_and_save_boxplot(df:pd.DataFrame, x_column, y_column, output_file,ylabel:str,log:bool=False,train:bool=False):
     """
     Creates a boxplot grouped by a column and saves it as an HTML file.
@@ -91,33 +87,38 @@ train_f1_plot = create_and_save_boxplot(all_data[['test_CO_loss','log_dataset']]
 aggregated_data = all_data.groupby('dataset').mean().reset_index()
 aggregated_data['log_dataset'] = np.log10(aggregated_data['dataset'])
 
+
 aggregated_data.rename(columns={'train_CO_loss':'train_cross_entropy','test_CO_loss':'test_cross_entropy'},inplace=True)
 
-X = sm.add_constant(aggregated_data['log_dataset'])  
 
-train_F1 = aggregated_data['train_F1']
-train_acc = aggregated_data['train_accuracy']
-train_CE = aggregated_data['train_cross_entropy']
+agg_data_slice = slice(None,-1)
+def fit_model(data:pd.DataFrame,data_slice):
+    data = data[data_slice]
+    X = sm.add_constant(data['log_dataset'])  
+    train_F1 = data['train_F1']
+    train_acc = data['train_accuracy']
+    train_CE = data['train_cross_entropy']
 
-test_F1 = aggregated_data['test_F1']
-test_acc = aggregated_data['test_accuracy']
-test_CE = aggregated_data['test_cross_entropy']
+    test_F1 = data['test_F1']
+    test_acc = data['test_accuracy']
+    test_CE = data['test_cross_entropy']
+    # Fit linear regression model
+    train_F1_model = sm.OLS(train_F1, X).fit()
+    train_acc_model = sm.OLS(train_acc, X).fit()
+    train_CE_model = sm.OLS(train_CE, X).fit()
 
-# Fit linear regression model
-train_F1_model = sm.OLS(train_F1, X).fit()
-train_acc_model = sm.OLS(train_acc, X).fit()
-train_CE_model = sm.OLS(train_CE, X).fit()
+    test_F1_model = sm.OLS(test_F1, X).fit()
+    test_acc_model = sm.OLS(test_acc, X).fit()
+    test_CE_model = sm.OLS(test_CE, X).fit()
+    reg_models = [train_F1_model,train_acc_model,train_CE_model,test_F1_model,test_acc_model,test_CE_model]
+    reg_summaries = [model.summary().as_text() for model in reg_models]
 
-test_F1_model = sm.OLS(test_F1, X).fit()
-test_acc_model = sm.OLS(test_acc, X).fit()
-test_CE_model = sm.OLS(test_CE, X).fit()
-reg_models = [train_F1_model,train_acc_model,train_CE_model,test_F1_model,test_acc_model,test_CE_model]
-reg_summaries = [model.summary().as_text() for model in reg_models]
+    #Write results to file
+    last_size = data['dataset'].iloc[-1].item()
+    with open(f'regressions{last_size}.txt','w') as reg_file:
+        for i in range(len(reg_summaries)):
+            reg_file.write('\n'+reg_summaries[i]+'\n')
 
-#Write results to file
-with open('regressions.txt','w') as reg_file:
-    for i in range(len(reg_summaries)):
-        reg_file.write('\n'+reg_summaries[i]+'\n')
-
+fit_model(aggregated_data,agg_data_slice)
 
 
