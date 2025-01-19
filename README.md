@@ -1,3 +1,9 @@
-# Frågeställning: Hur påverkas bildklassificeringsmodellers träffsäkerhet av datamängden?
-### All kod för att producera modellerna finns här.
-### Alla modeller och deras data finns i [W&B](https://wandb.ai/VRG-GA-leaf/GA-Leaf)
+# Impact of Dataset Size on Convolutional Neural Network Classification Performance 
+
+All code used for the research project is available in this repository. 
+
+## experiment/
+The code used to train and test models
+
+## analysis/ 
+The code used to generate graphs and make regressions.
