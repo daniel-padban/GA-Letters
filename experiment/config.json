@@ -19,7 +19,7 @@
     "MPkernel3":2,
     "fc1":512,
 
-    "lr":6e-4,
+    "lr":1e-4,
     "w_decay":0.4,
     "clip":1
 }
