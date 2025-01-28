@@ -11,7 +11,7 @@ def read_config(config_path) -> dict: #load config dictionary
 print('starting training')
 
 if __name__ == '__main__':
-    dataset_config = read_config('datasets.json')
+    dataset_config = read_config('experiment/datasets_emnist.json')
     set_prefix = 'B'
     n_sets = 11
     sets_start = 7
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     for dataset_n in range(sets_start,sets_end+1):
         data_group  = set_prefix+str(dataset_n)
         
-        config_dict = read_config('config.json')
+        config_dict = read_config('experiment/config.json')
         config_dict['data_group'] = data_group
         config_dict['train_size'] = dataset_config[data_group]['train_size']
         config_dict['epochs'] = dataset_config[data_group]['epochs']

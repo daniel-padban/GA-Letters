@@ -13,3 +13,4 @@ demo_site/
 regression.py
 save_models/
 data_zip/
+torch_Cifar10/
