@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
         #define transform to augment image
         image_transform = v2.Compose([
-            v2.Resize(28),
+            v2.Resize(32),
             v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]), # to tensor
             v2.RandomHorizontalFlip(p=1), #100% probability
             v2.RandomRotation(degrees=(90,90)), #flip 90 degrees
