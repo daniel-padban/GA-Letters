@@ -126,7 +126,7 @@ if __name__ == '__main__':
                 MPkernel3=MPkernel3,
                 fc1=fc1,
                 out_dim=26,
-                input_HW=28,
+                input_HW=32,
                 device=device
             )
             run.watch(models=model,criterion=torch.nn.functional.cross_entropy,log='all')
