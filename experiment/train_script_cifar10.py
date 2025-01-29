@@ -1,7 +1,7 @@
 import json
 from torch import Generator
 import torch
-
+import onnx
 
 def read_config(config_path) -> dict: #load config dictionary
         with open(config_path) as conf_file:
@@ -150,7 +150,9 @@ if __name__ == '__main__':
             writer_input_batch:torch.Tensor 
             writer_input_batch = writer_input_batch.to(device=device)
             writer.add_graph(model=trainer.model,input_to_model=writer_input_batch)'''
-            run.finish(0)
 
             dummy_input = test_dataset.__getitem__(0)
-            torch.onnx.export(model, dummy_input, 'analysis/model.onnx')
+            onnx_model = torch.onnx.dynamo_export(model,dummy_input)
+            onnx_model.save('analysis/dummy_model.onnx')
+            run.finish(0)
+
