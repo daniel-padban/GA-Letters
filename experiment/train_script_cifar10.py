@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
             train_subset_size = config_dict['train_size']
             #init wandb run
-            run = wandb.init(project='GA-Letters',name = f"Run-D{train_subset_size}-S{seed}", config=config_dict,job_type='experimental run',group=config_dict['data_group'])
+            run = wandb.init(project='GA-Letters',name = f"Cifar-D{train_subset_size}-S{seed}", config=config_dict,job_type='experimental run',group=config_dict['data_group'])
             test_subset_size = config_dict['test_size']
             #subset train data
 
