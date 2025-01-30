@@ -1,57 +1,57 @@
 {
     "C1":{
         "train_size":12000,
-        "epochs":12,
+        "epochs":24,
         "base_epochs":1
     },
     "C2":{
         "train_size":6000,
-        "epochs":24,
+        "epochs":48,
         "base_epochs":2
     },
     "C3":{
         "train_size":4000,
-        "epochs":36,
+        "epochs":72,
         "base_epochs":3
     },
     "C4":{
         "train_size":3000,
-        "epochs":48,
+        "epochs":96,
         "base_epochs":4
     },
     "C5":{
         "train_size":2400,
-        "epochs":60,
+        "epochs":120,
         "base_epochs":5
     },
     "C6":{
         "train_size":2000,
-        "epochs":72,
+        "epochs":144,
         "base_epochs":6
     },
     "C7":{
         "train_size":1500,
-        "epochs":96,
+        "epochs":192,
         "base_epochs":8
     },
     "C8":{
         "train_size":1200,
-        "epochs":120,
+        "epochs":240,
         "base_epochs":10
     },
     "C9":{
         "train_size":1000,
-        "epochs":144,
+        "epochs":288,
         "base_epochs":12
     },
     "C10":{
         "train_size":800,
-        "epochs":180,
+        "epochs":360,
         "base_epochs":15
     },
     "C11":{
         "train_size":750,
-        "epochs":192,
+        "epochs":384,
         "base_epochs":16
     }
 

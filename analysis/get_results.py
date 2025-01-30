@@ -257,7 +257,12 @@ class resultsMaker():
         return (test_F1s,test_accs,test_CE_losses),(train_F1s,train_accs,train_CE_losses),train_sizes
 
 if __name__ == "__main__":
-    results_creator = resultsMaker('B')
+    results_creator = resultsMaker('C')
+    
+    for i in range(1,12):
+        data = results_creator.download_wandb_project_data('DP-Team','GA-Letters',f'C{i}')
+        results_creator.transform_data(joined_data_list=data,group=f'C{i}',to_csv=True)
+    
     test_results, train_results, train_sizes = results_creator.make_lists()
 
     test_f1_x,test_f1_y,test_f1_z = results_creator.create_data2plot(test_results[0],train_sizes)
