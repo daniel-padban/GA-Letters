@@ -47,7 +47,7 @@ class CNNTrainer():
             self.optimizer.step() #update params
         if (epoch+1)%base_epochs == 0:
                 self.run.log({ #log results
-                    "train_step":epoch+1,
+                    "train_step":(epoch+1)/base_epochs,
                     "train_CO_loss":loss.item(),
                     "train_accuracy":accuracy.compute().item(),
                     "train_F1":F1.compute().item()
@@ -76,7 +76,7 @@ class CNNTrainer():
                 F1.update(pred_probabilities,y)
             if (epoch+1)%base_epochs == 0:
                 self.run.log({
-                    "test_step":epoch+1,
+                    "test_step":(epoch+1)/base_epochs,
                     "test_CO_loss":loss.item(),
                     "test_accuracy":accuracy.compute().item(),
                     "test_F1":F1.compute().item()
