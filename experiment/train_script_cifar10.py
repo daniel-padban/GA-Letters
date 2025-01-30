@@ -151,8 +151,8 @@ if __name__ == '__main__':
             writer_input_batch = writer_input_batch.to(device=device)
             writer.add_graph(model=trainer.model,input_to_model=writer_input_batch)'''
 
-            dummy_input = test_dataset.__getitem__(0)
+            ''' dummy_input = test_dataset.__getitem__(0)
             onnx_model = torch.onnx.dynamo_export(model,dummy_input)
-            onnx_model.save('analysis/dummy_model.onnx')
+            onnx_model.save('analysis/dummy_model.onnx')'''
             run.finish(0)
 
