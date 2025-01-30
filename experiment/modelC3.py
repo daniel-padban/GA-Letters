@@ -53,7 +53,7 @@ class CNN(nn.Module):
         #Convolution-Pooling block 3:
         self.conv3 = nn.Conv2d(in_channels=conv2,out_channels=conv3,kernel_size=ckernel3,padding='same',device=device)
         #self.bn3 = nn.BatchNorm2d(conv3,)
-        self.drop2d1 = nn.Dropout2d()
+        self.drop2d1 = nn.Dropout2d(0.3)
         self.activation3 = nn.SiLU()
         self.mpool3 = nn.MaxPool2d(kernel_size=MPkernel3,stride=1) #input 7 –> output 6
         mpool3_HW = self.calculate_dims(mpool2_HW,MPkernel3,stride=1) #height and/or width of mpool3 output
@@ -63,7 +63,7 @@ class CNN(nn.Module):
         flattened_dim = int((mpool3_HW**2)*conv3)
         self.activation3 = nn.SiLU()
         self.fc1 = nn.Linear(in_features=flattened_dim,out_features=fc1, device=device)
-        self.drop1d1 = nn.Dropout1d() #output dropout
+        self.drop1d1 = nn.Dropout1d(0.3) #output dropout
         self.fc2 = nn.Linear(in_features=fc1,out_features=out_dim, device=device)
 
     def calculate_dims(self, HW:int, kernel:int,stride:int=1,):
