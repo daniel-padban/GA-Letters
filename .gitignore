@@ -14,3 +14,8 @@ regression.py
 save_models/
 data_zip/
 torch_Cifar10/
+experiment/datasets_cifar10.json
+experiment/train_script_cifar10.py
+analysis/PlotNeuralNet
+C3_32*
+texput.log
