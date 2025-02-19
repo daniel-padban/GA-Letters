@@ -135,7 +135,7 @@ class resultsMaker():
         return x_arr, y_arr, z_arr
 
     def create_3d_plot(self,x, y, z, xlabel, ylabel, zlabel, title, filename):
-            fig = go.Figure(data=[go.Surface(z=z, x=x, y=y, colorscale='emrld')])
+            fig = go.Figure(data=[go.Surface(z=z, x=x, y=y, colorscale='emrld')],)
             camera = dict(
             eye=dict(x=-1.5, y=-1.5, z=1),  # Position of the camera
             center=dict(x=0, y=0, z=0),        # Focus point of the camera
@@ -150,7 +150,7 @@ class resultsMaker():
                 title=title,
                 scene_camera = camera,
             )
-            pio.write_html(fig, file=filename)
+            pio.write_html(fig, file=filename,include_plotlyjs='cdn')
             return fig
 
     def last_mean(self,data:np.ndarray,last_n):
@@ -257,11 +257,11 @@ class resultsMaker():
         return (test_F1s,test_accs,test_CE_losses),(train_F1s,train_accs,train_CE_losses),train_sizes
 
 if __name__ == "__main__":
-    results_creator = resultsMaker('C')
+    results_creator = resultsMaker('B')
     
-    for i in range(1,12):
-        data = results_creator.download_wandb_project_data('DP-Team','GA-Letters',f'C{i}')
-        results_creator.transform_data(joined_data_list=data,group=f'C{i}',to_csv=True)
+    ''' for i in range(1,12):
+        data = results_creator.download_wandb_project_data('DP-Team','GA-Letters',f'C{i}')'''
+    #results_creator.transform_data(tuple_data_list=,group=f'B{i}',to_csv=True)
     
     test_results, train_results, train_sizes = results_creator.make_lists()
 

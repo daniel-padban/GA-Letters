@@ -1,0 +1,3 @@
+import onnx
+
+onnx.load()

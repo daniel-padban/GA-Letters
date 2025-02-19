@@ -19,3 +19,5 @@ experiment/train_script_cifar10.py
 analysis/PlotNeuralNet
 C3_32*
 texput.log
+node_modules/
+package-lock.json
