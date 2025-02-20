@@ -14,7 +14,7 @@ if __name__ == '__main__':
     dataset_config = read_config('experiment/datasets_emnist.json')
     set_prefix = 'B'
     n_sets = 11
-    sets_start = 1
+    sets_start = 11
     sets_end = 11
 
     if sets_end > n_sets:
