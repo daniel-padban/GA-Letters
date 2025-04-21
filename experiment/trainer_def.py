@@ -23,8 +23,10 @@ class CNNTrainer():
         self.loss_fn = torch.nn.CrossEntropyLoss()
         #self.optimizer = torch.optim.AdamW(params=model.parameters(recurse=True),lr=self.lr)
         self.optimizer = torch.optim.AdamW(self.model.parameters(recurse=True),lr=self.lr,weight_decay=self.w_decay)
+   
     def _train_loop(self,epoch,base_epochs):
         self.model.train(True) #training mode 
+        
         step_group = epoch*len(self.train_dataloader)  # calculates how many steps have been processed already, start for count, epoch starts at 0
         running_loss = 0
         for i, (X, y) in enumerate(self.train_dataloader):
