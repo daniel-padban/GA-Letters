@@ -2,8 +2,11 @@
 
 All code used for the research project is available in this repository. 
 
-## experiment/
+## `Report.pdf`
+Paper written for High-School Diploma
+
+## `experiment/`
 The code used to train and test models
 
-## analysis/ 
+## `analysis/`
 The code used to generate graphs and make regressions.
